@@ -1,0 +1,52 @@
+
+public class CourseObj {
+
+	public String name;
+	public String semester;
+	public int numPrereq;
+	int priority;
+	public void CourseObj(String name){
+		this.name = name;
+		this.semester = semester;
+		this. numPrereq = numPrereq;
+		this.priority = priority;
+		
+	}
+	
+	public String getName(){
+		return name;
+	}
+	
+	public void setName(String name){
+		this.name = name;
+	}
+	
+	public String getSemester(){
+		return semester;
+	}
+	
+	public void setSemester(String semester){
+		this.semester = semester;
+	}
+	
+	
+	public int getNumPrereqs(){
+		return numPrereq;
+	}
+	
+	public void setNumPrereqs(int numPrereq){
+		this.numPrereq = numPrereq;
+	}
+	
+	public int getPriority(){
+		return priority;
+	}
+	
+	public void setPriority(int priority){
+		this.priority = priority;
+	}
+	
+	
+	
+	
+}

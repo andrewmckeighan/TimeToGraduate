@@ -1,4 +1,4 @@
-
+//The object for a single course.
 public class CourseObj {
 
 	public String name;

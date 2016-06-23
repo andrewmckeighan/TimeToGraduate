@@ -1,19 +1,37 @@
 import java.io.*;
-public class main {
+import java.util.Scanner;
 
+public class main {
+	public int maxCoursePerSem;
+	public int numCourse;
+	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
+		//make sure this works with .in file later on...
+		readInput("src/testCase.txt");
 
 	}
 	
 	//reads the input file
 	public static void readInput(String fileName){
+		File file = new File(fileName);
 		try {
-			FileReader file = new FileReader(fileName);
+			Scanner scan = new Scanner(file);
+			while(scan.hasNextLine()){
+				if(scan.nextLine() == "-1 -1"){
+					break;
+				}
+				while(scan.hasNext()){
+					System.out.println(scan.nextLine());
+				}
+				
+			}
+			scan.close();
 		} catch (FileNotFoundException e) {
-			System.out.println("ERROR : Unable To Read Input File!!!");
+			System.out.println("Error Reading File!");
 			e.printStackTrace();
 		}
+		
 	}
 	
 }

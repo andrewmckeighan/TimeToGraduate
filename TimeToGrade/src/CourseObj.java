@@ -1,9 +1,12 @@
+import java.util.ArrayList;
+
 //The object for a single course.
 public class CourseObj {
 
 	public String name;
 	public String semester;
 	public int numPrereq;
+	public ArrayList<String> prereqs = new ArrayList<String>();
 	int priority;
 	/*
 	 * The whole idea is that it will make the objects based off of the name
@@ -39,6 +42,7 @@ public class CourseObj {
 	//returns the number of prerequisites for the class.
 	public int getNumPrereqs(){
 		return numPrereq;
+		
 	}
 	
 	//sets the number of prerequisites you need before you can take the class.
@@ -60,7 +64,21 @@ public class CourseObj {
 		this.priority = priority;
 	}
 	
+	public ArrayList<String> getPrereqNames(){
+		return prereqs;
+	}
 	
+	public void addPrereqName(String name){
+		prereqs.add(name);
+	}
 	
+	public void removePrereqName(String name){
+		for(int i = 0; i<prereqs.size(); i++){
+			if(prereqs.get(i).equals(name)){
+				prereqs.remove(i);
+				numPrereq--;
+			}
+		}
+	}
 	
 }

@@ -4,8 +4,8 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class main {
-	public static int maxCoursePerSem;
-	public static int numCourse;
+	public static int maxCoursePerSem;//m
+	public static int numCourse;//n
 	
 	public static void main(String[] args) {
 		
@@ -40,6 +40,7 @@ public class main {
 						courseCt = 0;
 					}
 					//Pulls out the individual tokens for each string. This will make it easier to sort through.
+					int flag = 0;
 					while(st.hasMoreTokens()){
 						if(i == 0){
 							numCourse = Integer.parseInt(st.nextToken());
@@ -51,29 +52,34 @@ public class main {
 							//skip the names for now...
 							st.nextToken();
 							i++;
-						}else if(i >= numCourse+1){
+						}else if(i >= numCourse+2){
 							//CourseObj obj = new CourseObj(st.nextToken());
 							CourseObj obj = null;
 							int ct = 0;
-							while(st.countTokens()>=0){
+							while((3+flag)> ct){
 								if(ct==0){
 									obj = new CourseObj(st.nextToken());
 									ct++;
-									i++;
+									//i++;
 								}else if(ct==1){
 									obj.setSemester(st.nextToken());
 									ct++;
-									i++;
+									//i++;
 								}else if(ct == 2){
-									obj.setNumPrereqs(Integer.parseInt(st.nextToken()));
+									flag = Integer.parseInt(st.nextToken());
+									obj.setNumPrereqs(flag);
 									ct++;
-									i++;
+									//i++;
+								}else if(ct > 2){
+									String name = st.nextToken();
+									obj.addPrereqName(name);
+									ct++;
 								}
 								
 							}
 							arr.add(obj);
-							
 							courseCt++;
+							break;
 						}
 						
 						
@@ -90,8 +96,15 @@ public class main {
 		
 	}
 	
-	public static void analyzeSchool(ArrayList<CourseObj> arr){
-		
+	//Search through each course object and look in the prereq names for the names of classes to be able to assign them a priority.
+	//Needs to be redone!!!
+	public static CourseObj searchForClass(ArrayList<CourseObj> arr , String key){
+		for(int j =0; j<arr.size(); j++){
+			if(arr.get(j).getName().equals(key)){
+				return arr.get(j);
+			}
+		}
+		return null;
 	}
 	
 }

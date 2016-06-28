@@ -64,6 +64,16 @@ public class CourseObj {
 		this.priority = priority;
 	}
 	
+	public void addPriority(){
+		priority++;
+	}
+	
+	public void subPriority(){
+		if(priority > 0){
+			priority--;
+		}
+	}
+	
 	public ArrayList<String> getPrereqNames(){
 		return prereqs;
 	}

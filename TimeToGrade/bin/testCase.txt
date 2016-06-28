@@ -5,5 +5,5 @@ cs123 mt42 cs456 cs789
 mt42 F 0
 cs123 S 0
 cs456 S 2 cs123 mt42
-cs789 B 1 cs456
+cs789 B 2 cs456 mt42
 -1 -1

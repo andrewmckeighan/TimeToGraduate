@@ -49,41 +49,46 @@ public class main {
 							maxCoursePerSem = Integer.parseInt(st.nextToken());
 							i++;
 						}else if((i-2)<numCourse){
-							//skip the names for now...
-							st.nextToken();
+							CourseObj name = new CourseObj(st.nextToken());//makes the object. Contains only name
+							arr.add(name);//adds object to arraylist
 							i++;
 						}else if(i >= numCourse+2){
-							//CourseObj obj = new CourseObj(st.nextToken());
-							CourseObj obj = null;
+							int curr = 0;
 							int ct = 0;
 							while((3+flag)> ct){
-								if(ct==0){
-									obj = new CourseObj(st.nextToken());
+								if(ct==0){//the name of the course
+									String tkn = st.nextToken();
+									for(int k =0; k< arr.size(); k++){
+										if(arr.get(k).getName().equals(tkn)){
+											curr = k;
+										}
+									}
 									ct++;
-									//i++;
-								}else if(ct==1){
-									obj.setSemester(st.nextToken());
+								}else if(ct==1){ //the semester of the course
+									arr.get(curr).setSemester(st.nextToken());
 									ct++;
-									//i++;
-								}else if(ct == 2){
+									
+								}else if(ct == 2){//how many prerequisites the course has
 									flag = Integer.parseInt(st.nextToken());
-									obj.setNumPrereqs(flag);
+									arr.get(curr).setNumPrereqs(flag);
 									ct++;
-									//i++;
-								}else if(ct > 2){
+								}else if(ct > 2){//if a course has prerequisites, the counter will add them.
 									String name = st.nextToken();
-									obj.addPrereqName(name);
+									arr.get(curr).addPrereqName(name);
+									for(int k =0; k< arr.size(); k++){
+										if(arr.get(k).getName().equals(name)){
+											arr.get(k).addPriority();
+										}
+									}
 									ct++;
 								}
 								
 							}
-							arr.add(obj);
+							
 							courseCt++;
 							break;
 						}
 						
-						
-						//System.out.println(st.nextToken());
 						
 					}
 				}

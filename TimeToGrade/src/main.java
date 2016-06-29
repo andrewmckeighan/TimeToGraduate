@@ -6,6 +6,8 @@ import java.util.StringTokenizer;
 public class main {
 	public static int maxCoursePerSem;//m
 	public static int numCourse;//n
+	public static ArrayList<CourseObj> arr;
+	
 	
 	public static void main(String[] args) {
 		
@@ -20,9 +22,9 @@ public class main {
 		String line;
 		StringTokenizer st;
 		
-		ArrayList<CourseObj> arr = new ArrayList<CourseObj>();
+		arr = new ArrayList<CourseObj>();
 		int i = 0;
-		int courseCt = 0;
+		int chk =0;
 		try {
 			Scanner scan = new Scanner(file);
 			
@@ -30,14 +32,19 @@ public class main {
 				line = scan.nextLine();
 				st = new StringTokenizer(line);
 				if(line.equals("-1 -1")){
+					analyze(arr, maxCoursePerSem);
 					break;
 				}else{
 					//this resets everything because the only time a line will have 2 tokens is when you have n and m showing.
 					if(st.countTokens() == 2){
+						if(chk>0){
+							//Analyze the last school
+							analyze(arr, maxCoursePerSem);
+						}
 						System.out.println("new school");
+						chk++;
 						arr.clear();
 						i=0;
-						courseCt = 0;
 					}
 					//Pulls out the individual tokens for each string. This will make it easier to sort through.
 					int flag = 0;
@@ -85,7 +92,6 @@ public class main {
 								
 							}
 							
-							courseCt++;
 							break;
 						}
 						
@@ -101,15 +107,57 @@ public class main {
 		
 	}
 	
-	//Search through each course object and look in the prereq names for the names of classes to be able to assign them a priority.
-	//Needs to be redone!!!
-	public static CourseObj searchForClass(ArrayList<CourseObj> arr , String key){
-		for(int j =0; j<arr.size(); j++){
-			if(arr.get(j).getName().equals(key)){
-				return arr.get(j);
+	
+	
+	
+	public static void analyze(ArrayList<CourseObj> arr, int maxCourses){
+		sort(arr);
+		
+	}
+	
+	
+	public static void sort(ArrayList<CourseObj> arr){
+		int length = arr.size();
+		ArrayList<CourseObj> tmp = new ArrayList<CourseObj>();
+		mergeSort(arr, tmp, 0, length-1);
+	}
+	
+	
+	public static void mergeSort(ArrayList<CourseObj> arr, ArrayList<CourseObj> tmp, int low, int high){
+		if(low<high){
+			int middle = (low + high)/2;
+			mergeSort(arr, tmp, low, middle);
+			mergeSort(arr, tmp, middle+1, high);
+			merge(arr, tmp, low, middle+1, high);
+		}
+		
+	}
+	
+	
+	public static void merge(ArrayList<CourseObj>arr, ArrayList<CourseObj> tmp, int low, int middle, int high){
+		int lowEnd = middle-1;
+		int k = low;
+		int num = high - low + 1;
+		
+		while(low <= lowEnd && middle <= high){
+			if(arr.get(low).getPriority() <= arr.get(middle).getPriority()){
+				tmp.add(k++, arr.get(middle++));
+			}else{
+				tmp.add(k++, arr.get(low++));
 			}
 		}
-		return null;
+		while(low <= lowEnd){
+			tmp.add(k++, arr.get(low++));
+		}
+		while(middle<= high){
+			tmp.add(k++, arr.get(middle++));
+		}
+		
+		for(int i = 0; i< num; i++, high--){
+		
+			arr.set(high, tmp.get(high));
+		}
+		
 	}
 	
 }

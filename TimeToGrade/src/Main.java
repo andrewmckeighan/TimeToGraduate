@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-public class main {
+public class Main {
 	public static int maxCoursePerSem;// m
 	public static int numCourse;// n
 	public static ArrayList<CourseObj> arr;
@@ -115,7 +115,7 @@ public class main {
 		}
 
 	}
-
+	//This method is what determines which class to take and when, it works for the examples given on the worksheet if you input as .txt file.
 	public static void analyze(ArrayList<CourseObj> arr, int maxCourses) {
 		int countSem = 0;
 		sort(arr);

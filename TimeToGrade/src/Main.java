@@ -9,110 +9,102 @@ public class Main {
 	public static ArrayList<CourseObj> arr;
 
 	public static void main(String[] args) {
-
-		// make sure this works with .in file later on...
-		readInput("src/testCase.txt");
-
+		readInput();
 	}
 
 	// reads and stores the input file
-	public static void readInput(String fileName) {
-		File file = new File(fileName);
+	public static void readInput() {
+		//File file = new File(fileName);
 		String line;
 		StringTokenizer st;
 
 		arr = new ArrayList<CourseObj>();
 		int i = 0;
 		int chk = 0;
-		try {
-			Scanner scan = new Scanner(file);
-
-			while (scan.hasNextLine()) {
-				line = scan.nextLine();
-				st = new StringTokenizer(line);
-				if (line.equals("-1 -1")) {
-					analyze(arr, maxCoursePerSem);
-					break;
-				} else {
-					// this resets everything because the only time a line will
-					// have 2 tokens is when you have n and m showing.
-					if (st.countTokens() == 2) {
-						if (chk > 0) {
-							// Analyze the last school
-							analyze(arr, maxCoursePerSem);
-						}
-						System.out.println("new school");
-						chk++;
-						arr.clear();
-						i = 0;
+		//Scanner scan = new Scanner(file);
+		Scanner scan = new Scanner(System.in);
+		while (scan.hasNextLine()) {
+			line = scan.nextLine();
+			st = new StringTokenizer(line);
+			if (line.equals("-1 -1")) {
+				analyze(arr, maxCoursePerSem);
+				break;
+			} else {
+				// this resets everything because the only time a line will
+				// have 2 tokens is when you have n and m showing.
+				if (st.countTokens() == 2) {
+					if (chk > 0) {
+						// Analyze the last school
+						analyze(arr, maxCoursePerSem);
 					}
-					// Pulls out the individual tokens for each string. This
-					// will make it easier to sort through.
-					int flag = 0;
-					while (st.hasMoreTokens()) {
-						if (i == 0) {
-							numCourse = Integer.parseInt(st.nextToken());
-							i++;
-						} else if (i == 1) {
-							maxCoursePerSem = Integer.parseInt(st.nextToken());
-							i++;
-						} else if ((i - 2) < numCourse) {
-							CourseObj name = new CourseObj(st.nextToken());// makes
-																			// the
-																			// object.
-																			// Contains
-																			// only
-																			// name
-							arr.add(name);// adds object to arraylist
-							i++;
-						} else if (i >= numCourse + 2) {
-							int curr = 0;
-							int ct = 0;
-							while ((3 + flag) > ct) {
-								if (ct == 0) {// the name of the course
-									String tkn = st.nextToken();
-									for (int k = 0; k < arr.size(); k++) {
-										if (arr.get(k).getName().equals(tkn)) {
-											curr = k;
-										}
+					System.out.println("new school");
+					chk++;
+					arr.clear();
+					i = 0;
+				}
+				// Pulls out the individual tokens for each string. This
+				// will make it easier to sort through.
+				int flag = 0;
+				while (st.hasMoreTokens()) {
+					if (i == 0) {
+						numCourse = Integer.parseInt(st.nextToken());
+						i++;
+					} else if (i == 1) {
+						maxCoursePerSem = Integer.parseInt(st.nextToken());
+						i++;
+					} else if ((i - 2) < numCourse) {
+						CourseObj name = new CourseObj(st.nextToken());// makes
+																		// the
+																		// object.
+																		// Contains
+																		// only
+																		// name
+						arr.add(name);// adds object to arraylist
+						i++;
+					} else if (i >= numCourse + 2) {
+						int curr = 0;
+						int ct = 0;
+						while ((3 + flag) > ct) {
+							if (ct == 0) {// the name of the course
+								String tkn = st.nextToken();
+								for (int k = 0; k < arr.size(); k++) {
+									if (arr.get(k).getName().equals(tkn)) {
+										curr = k;
 									}
-									ct++;
-								} else if (ct == 1) { // the semester of the
-														// course
-									arr.get(curr).setSemester(st.nextToken());
-									ct++;
-
-								} else if (ct == 2) {// how many prerequisites
-														// the course has
-									flag = Integer.parseInt(st.nextToken());
-									arr.get(curr).setNumPrereqs(flag);
-									ct++;
-								} else if (ct > 2) {// if a course has
-													// prerequisites, the
-													// counter will add them.
-									String name = st.nextToken();
-									arr.get(curr).addPrereqName(name);
-									for (int k = 0; k < arr.size(); k++) {
-										if (arr.get(k).getName().equals(name)) {
-											arr.get(k).addPriority();
-										}
-									}
-									ct++;
 								}
+								ct++;
+							} else if (ct == 1) { // the semester of the
+													// course
+								arr.get(curr).setSemester(st.nextToken());
+								ct++;
 
+							} else if (ct == 2) {// how many prerequisites
+													// the course has
+								flag = Integer.parseInt(st.nextToken());
+								arr.get(curr).setNumPrereqs(flag);
+								ct++;
+							} else if (ct > 2) {// if a course has
+												// prerequisites, the
+												// counter will add them.
+								String name = st.nextToken();
+								arr.get(curr).addPrereqName(name);
+								for (int k = 0; k < arr.size(); k++) {
+									if (arr.get(k).getName().equals(name)) {
+										arr.get(k).addPriority();
+									}
+								}
+								ct++;
 							}
 
-							break;
 						}
 
+						break;
 					}
+
 				}
 			}
-			scan.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("Error Reading File!");
-			e.printStackTrace();
 		}
+		scan.close();
 
 	}
 	//This method is what determines which class to take and when, it works for the examples given on the worksheet if you input as .txt file.
@@ -153,7 +145,7 @@ public class Main {
 			countSem++;
 			temp.clear();
 		}
-		System.out.println("It took "+countSem+" semesters to graduate!");
+		System.out.println("The minimum number of semesters required to graduate is "+countSem);
 	}
 
 	public static void sort(ArrayList<CourseObj> arr) {

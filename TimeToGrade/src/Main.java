@@ -7,16 +7,23 @@ public class Main {
 	public static int maxCoursePerSem;// m
 	public static int numCourse;// n
 	public static ArrayList<CourseObj> arr;
-
+	public static ArrayList<String> fin = new ArrayList<String>();
 	public static void main(String[] args) {
 		readInput();
+		for(int i = 0; i<fin.size(); i++){
+			System.out.println(fin.get(i));
+		}
 	}
 
 	// reads and stores the input file
 	public static void readInput() {
 		//File file = new File(fileName);
+		int countLines = 0;
 		String line;
 		StringTokenizer st;
+		String x = null;
+		String y = null;
+		boolean end = true;
 
 		arr = new ArrayList<CourseObj>();
 		int i = 0;
@@ -25,45 +32,49 @@ public class Main {
 		Scanner scan = new Scanner(System.in);
 		while (scan.hasNextLine()) {
 			line = scan.nextLine();
+			while(line.equals("")){
+				line = scan.nextLine();
+			}
 			st = new StringTokenizer(line);
 			if (line.equals("-1 -1")) {
-				analyze(arr, maxCoursePerSem);
 				break;
 			} else {
-				// this resets everything because the only time a line will
-				// have 2 tokens is when you have n and m showing.
-				if (st.countTokens() == 2) {
-					if (chk > 0) {
-						// Analyze the last school
-						analyze(arr, maxCoursePerSem);
-					}
-					System.out.println("new school");
-					chk++;
-					arr.clear();
-					i = 0;
+				//checks if a new schedule.
+				if (end == true) {
+					countLines=0;
+					end = false;
+					x = st.nextToken();
+					y=st.nextToken();
+					//if(isInteger(x)){
+						if (chk > 0) {
+							// Analyze the last school
+							analyze(arr, maxCoursePerSem);
+						}
+						//System.out.println("new school");
+						chk++;
+						arr.clear();
+						i = 0;
+					//}
+					
 				}
 				// Pulls out the individual tokens for each string. This
 				// will make it easier to sort through.
 				int flag = 0;
 				while (st.hasMoreTokens()) {
 					if (i == 0) {
-						numCourse = Integer.parseInt(st.nextToken());
+						numCourse = Integer.parseInt(x);
 						i++;
 					} else if (i == 1) {
-						maxCoursePerSem = Integer.parseInt(st.nextToken());
+						maxCoursePerSem = Integer.parseInt(y);
 						i++;
 					} else if ((i - 2) < numCourse) {
-						CourseObj name = new CourseObj(st.nextToken());// makes
-																		// the
-																		// object.
-																		// Contains
-																		// only
-																		// name
+						CourseObj name = new CourseObj(st.nextToken());// makes the object. Contains only name
 						arr.add(name);// adds object to arraylist
 						i++;
 					} else if (i >= numCourse + 2) {
 						int curr = 0;
 						int ct = 0;
+						countLines++;
 						while ((3 + flag) > ct) {
 							if (ct == 0) {// the name of the course
 								String tkn = st.nextToken();
@@ -97,7 +108,9 @@ public class Main {
 							}
 
 						}
-
+						if(countLines == numCourse){
+							end = true;
+						}
 						break;
 					}
 
@@ -129,7 +142,7 @@ public class Main {
 				int ele = 0;
 				for (int j = 0; j < arr.size(); j++) {
 					if (arr.get(j).getName().equals(temp.get(i).getName())) {
-						System.out.println(arr.get(j).getName());
+						//System.out.println(arr.get(j).getName());
 						ele = j;
 					} else if (arr.get(j).getNumPrereqs() > 0) {
 						arr.get(j).removePrereqName(temp.get(i).getName());
@@ -145,7 +158,7 @@ public class Main {
 			countSem++;
 			temp.clear();
 		}
-		System.out.println("The minimum number of semesters required to graduate is "+countSem);
+		fin.add("The minimum number of semesters required to graduate is "+countSem + ".");
 	}
 
 	public static void sort(ArrayList<CourseObj> arr) {
@@ -188,6 +201,19 @@ public class Main {
 			arr.set(high, tmp.get(high));
 		}
 
+	}
+	
+	public static boolean isInteger( String input )
+	{
+	   try
+	   {
+	      Integer.parseInt( input );
+	      return true;
+	   }
+	   catch(NumberFormatException e)
+	   {
+	      return false;
+	   }
 	}
 
 }
